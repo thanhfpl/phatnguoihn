@@ -4,52 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tra Cứu Biển Số Xe</title>
+    <!-- Thêm Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
 
         .container {
+            margin-top: 100px;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 20px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #218838;
         }
 
         .result {
@@ -57,22 +29,32 @@
             font-size: 16px;
             color: #333;
         }
+
+        button {
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Tra Cứu Biển Số Xe</h1>
-    <input type="text" id="licensePlate" placeholder="Nhập biển số xe">
-    <button onclick="checkLicensePlate()">Tra Cứu</button>
+    <h1 class="text-center">Tra Cứu Biển Số Xe</h1>
+    <div class="form-group">
+        <input type="text" class="form-control form-control-lg" id="licensePlate" placeholder="Nhập biển số xe">
+    </div>
+    <button class="btn btn-success btn-lg btn-block" onclick="checkLicensePlate()">Tra Cứu</button>
     <div class="result" id="result"></div>
 </div>
 
+<!-- Thêm jQuery và Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     async function checkLicensePlate() {
         const licensePlate = document.getElementById('licensePlate').value;
         const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = 'Đang xử lý...';
+        resultDiv.innerHTML = '<div class="alert alert-info">Đang xử lý...</div>';
 
         try {
             const response = await fetch(`https://vietcheckcar.com/api/api.php?api_key=sfund&bsx=${licensePlate}&bypass_cache=0&loaixe=2&vip=0`);
@@ -80,18 +62,20 @@
 
             if (data.totalViolations > 0) {
                 let violations = data.violations.map(v => {
-                    return `<p><strong>Trạng thái:</strong> ${v.trang_thai}<br>
-                             <strong>Biển kiểm sát:</strong> ${v.bien_kiem_sat}<br>
-                             <strong>Thời gian vi phạm:</strong> ${v.thoi_gian_vi_pham}<br>
-                             <strong>Địa điểm vi phạm:</strong> ${v.dia_diem_vi_pham}<br>
-                             <strong>Hành vi vi phạm:</strong> ${v.hanh_vi_vi_pham}<br></p>`;
+                    return `<div class="alert alert-warning">
+                                <strong>Trạng thái:</strong> ${v.trang_thai}<br>
+                                <strong>Biển kiểm sát:</strong> ${v.bien_kiem_sat}<br>
+                                <strong>Thời gian vi phạm:</strong> ${v.thoi_gian_vi_pham}<br>
+                                <strong>Địa điểm vi phạm:</strong> ${v.dia_diem_vi_pham}<br>
+                                <strong>Hành vi vi phạm:</strong> ${v.hanh_vi_vi_pham}<br>
+                            </div>`;
                 }).join('');
-                resultDiv.innerHTML = `<h2>Kết Quả:</h2>${violations}`;
+                resultDiv.innerHTML = `<h2 class="text-center">Kết Quả:</h2>${violations}`;
             } else {
-                resultDiv.innerHTML = `<h2>Không có lỗi vi phạm cho biển số: ${licensePlate}</h2>`;
+                resultDiv.innerHTML = `<h2 class="text-center">Không có lỗi vi phạm cho biển số: ${licensePlate}</h2>`;
             }
         } catch (error) {
-            resultDiv.innerHTML = 'Có lỗi xảy ra, vui lòng thử lại sau.';
+            resultDiv.innerHTML = '<div class="alert alert-danger">Có lỗi xảy ra, vui lòng thử lại sau.</div>';
         }
     }
 </script>
