@@ -5,7 +5,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 # Thay YOUR_TOKEN bằng token của bot bạn nhận được từ BotFather
-TOKEN = '8059832576:AAFdn-gK-2XgmPspkgdvZOC_xP3cy4Rz8U0'
+TOKEN = 'YOUR_TOKEN'
 API_URL = 'https://vietcheckcar.com/api/api.php?api_key=sfund&bsx={}&bypass_cache=0&loaixe=2&vip=0'
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
